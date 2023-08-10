@@ -64,9 +64,7 @@ async addProduct(cartId, productId ) {
         const productIndex = carts[cartIndex].products.findIndex((product) => product.product === productId);
 
         if (productIndex === 0) {
-          const newQuantity = carts[cartIndex].products[productIndex].quantity + 1
-          carts[cartIndex].products[productIndex].quantity = newQuantity
-          
+          carts[cartIndex].products[productIndex].quantity ++;
         } else {
           const newProduct = {
             product: productId,

@@ -3,7 +3,7 @@ const router = express.Router();
 const Products = require('../products.js');
 const FILE_PRODUCTS = './src/data/dataProducts.json';
 
-router.get("/api/products", async (req,res) => {
+router.get("/", async (req,res) => {
   try{
     const products = new Products(FILE_PRODUCTS);
     const limit = Number(req.query.limit);
@@ -23,7 +23,7 @@ router.get("/api/products", async (req,res) => {
   }
 });
 
-router.get("/api/products/:pid", async (req,res) => {
+router.get("/:pid", async (req,res) => {
   try{
     const id = Number(req.params.pid);
     const products = new Products(FILE_PRODUCTS);
@@ -39,13 +39,13 @@ router.get("/api/products/:pid", async (req,res) => {
     res.status(500).send([{ error: "Ocurrio un error"}]);
   }
 });
-router.post("/api/products", async (req,res) => {
+router.post("/", async (req,res) => {
   try{
     const body = req.body;
     const products = new Products(FILE_PRODUCTS);
     const saveProduct = await products.save(body)
 
-    if(!body ||!body.title || !body.descripcion || !body.price || !body.price || !body.stock || !body.category || !body.thumbnail){
+    if(!body ||!body.title || !body.descripcion || !body.price || !body.code || !body.stock || !body.category || !body.thumbnail){
       res.status(400).send({error: "Debe proporcionar todos los campos (id, name, price, description, code, stock, category, thumbnail)."})
     } else {
       res.status(200).send([{id: saveProduct}]);
@@ -55,7 +55,7 @@ router.post("/api/products", async (req,res) => {
   }
 })
 
-router.delete("/api/products/:pid", async (req,res) => {
+router.delete("/:pid", async (req,res) => {
   try{
     const id = Number(req.params.pid);
 
@@ -72,16 +72,19 @@ router.delete("/api/products/:pid", async (req,res) => {
   }
 })
 
-router.put("/api/products/:pid", async (req,res) => {
+router.put("/:pid", async (req,res) => {
   try{
     const id = Number(req.params.pid);
     const body = req.body;
     const products = new Products(FILE_PRODUCTS);
-    const updateProduct = await products.editById(id, body);
 
-    if(!body ||!body.title || !body.descripcion || !body.price || !body.price || !body.stock || !body.category || !body.thumbnail){
+    if(!body ||!body.title || !body.descripcion || !body.price || !body.code || !body.stock || !body.category || !body.thumbnail){
       res.status(400).send({error: "Debe proporcionar todos los campos (id, name, price, description, code, stock, category, thumbnail)."})
-     } else if (updateProduct[0].error) {
+     } 
+
+     const updateProduct = await products.editById(id, body);
+     
+     if (updateProduct[0].error) {
       res.status(404).send(updateProduct);
     } else{
       res.status(200).send(updateProduct);

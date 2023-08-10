@@ -3,7 +3,7 @@ const router = express.Router();
 const Carts = require('../carts.js');
 const FILE_CARTS = './src/data/dataCarts.json';
 
-router.post("/api/carts", async (req,res) => {
+router.post("/", async (req,res) => {
   try{
     const carts = new Carts(FILE_CARTS);
     const newCarts = await carts.save();
@@ -14,7 +14,7 @@ router.post("/api/carts", async (req,res) => {
     res.status(500).send([{ error: "Ocurrio un error"}])   }
 });
 
-router.get("/api/carts/:cid", async (req,res) => {
+router.get("/:cid", async (req,res) => {
   // deberá listar los productos que pertenezcan al carrito con el parámetro cid proporcionados
   const id = Number(req.params.cid);
   try{
@@ -31,7 +31,7 @@ router.get("/api/carts/:cid", async (req,res) => {
     res.status(500).send([{ error: "Ocurrio un error"}])   }
 })
 
-router.post("/api/carts/:cid/product/:pid", async (req,res) => {
+router.post("/:cid/product/:pid", async (req,res) => {
   const cartId = Number(req.params.cid);
   const productId = Number(req.params.pid);
   try{

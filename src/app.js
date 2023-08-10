@@ -8,8 +8,8 @@ app.use(express.urlencoded({ extended: true }))
 
 const PORT = 8080;
 
-app.use("/", cartsRouter);
-app.use("/", productsRouter);
+app.use("/api/products", cartsRouter);
+app.use("/api/carts", productsRouter);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
