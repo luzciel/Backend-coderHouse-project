@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Carts = require('../carts.js');
 const FILE_CARTS = './src/data/dataCarts.json';
+const CARTS = new Carts(FILE_CARTS);
 
 router.post("/", async (req,res) => {
   try{
-    const carts = new Carts(FILE_CARTS);
-    const newCarts = await carts.save();
+    const newCarts = await CARTS.save();
     
     res.status(200).send(newCarts);
 
@@ -18,8 +18,7 @@ router.get("/:cid", async (req,res) => {
   // deberá listar los productos que pertenezcan al carrito con el parámetro cid proporcionados
   const id = Number(req.params.cid);
   try{
-    const carts = new Carts(FILE_CARTS);
-    const cartId = await carts.getById(id);
+    const cartId = await CARTS.getById(id);
 
     if(cartId[0].error) {
       res.status(404).send(cartId);
@@ -35,8 +34,7 @@ router.post("/:cid/product/:pid", async (req,res) => {
   const cartId = Number(req.params.cid);
   const productId = Number(req.params.pid);
   try{
-    const carts = new Carts(FILE_CARTS);
-    const addProduct = await carts.addProduct(cartId, productId);
+    const addProduct = await CARTS.addProduct(cartId, productId);
     
     if(addProduct[0].error) {
       res.status(404).send(addProduct);
