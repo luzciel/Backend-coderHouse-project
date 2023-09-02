@@ -14,8 +14,29 @@ DELETE /api/products/:pid
 
 PUT /api/products/:pid
 
-POST /api/carts
+GET /api/users
 
-GET /api/carts/:cid
+POST /api/users
 
-POST /api/carts/:cid/product/:pid
+PUT /api/users/:pid
+
+DELETE /api/users/:pid
+
+
+### Postman
+api/products
+![](./img/postman-5.png)
+![](./img/postman-4.png)
+![](./img/postman-2.png)
+![](./img/postman-3.png)
+
+api/users
+![](./img/postman-7.png)
+![](./img/postman-6.png)
+![](./img/postman-1.png)
+
+
+
+
+
+
