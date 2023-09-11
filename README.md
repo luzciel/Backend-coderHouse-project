@@ -2,9 +2,10 @@
 
 ### A continuación se listan los endpoint que formarán parte de esta API:
 
+#### Products
 GET /api/products
 
-GET /api/products?limit=numero
+GET /api/products?limit=numero&page=number&sort=asc&query={"category":"tecnologia"}
 
 GET /api/products/:pid
 
@@ -14,29 +15,31 @@ DELETE /api/products/:pid
 
 PUT /api/products/:pid
 
-GET /api/users
+#### Cart
+GET /api/carts/:cid
 
-POST /api/users
+POST /api/carts
 
-PUT /api/users/:pid
+PUT /api/carts/:cid
 
-DELETE /api/users/:pid
+DELETE /api/carts/:cid
 
+POST /api/carts/:cid/product/:pid
 
-### Postman
-api/products
-![](./img/postman-5.png)
-![](./img/postman-4.png)
-![](./img/postman-2.png)
-![](./img/postman-3.png)
+PUT /api/carts/:cid/product/:pid
 
-api/users
-![](./img/postman-7.png)
-![](./img/postman-6.png)
-![](./img/postman-1.png)
+DELETE /api/carts/:cid/product/:pid
 
 
+#### Views 
+-Lista de productos con paginación.
 
+GET /products
 
+-Detalles del producto seleccionado.
 
+GET /products/:pid
 
+-Lista los productos agregados al carrito.
+
+GET /carts/:cid?

@@ -1,0 +1,27 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product</title>
+  </head>
+  <body>
+    {{#if isValid}}
+      <div>
+        <h1>Producto:</h1>
+
+            <h2>{{product.payload.title}}</h2>
+            <p>Precio: {{product.payload.price}}</p>
+            <p>Descripción: {{product.payload.description}}</p>
+            <p>Stock: {{product.payload.stock}}</p>
+            <p>Categoria: {{product.payload.category}}</p>
+            <p>Codigo:{{product.payload.code}}</p>
+            <button onclick="addToCart('{{product.payload._id}}')">
+              Agregar al carrito
+            </button>
+      </div>
+    {{else}}
+      <h1>No hay producto para mostrar</h1>
+    {{/if}}
+  </body>
+  <script src="/scripts.js"></script>
+</html>

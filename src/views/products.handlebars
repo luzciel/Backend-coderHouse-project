@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Productos</title>
+</head>
+<body>
+  {{#if isValid}}
+  <div>
+  <h1>Lista de Productos:</h1>
+  <ul>
+    {{#each products.payload.docs}}
+      <li>
+        <h2>{{title}}</h2>
+        <p>id: {{_id}}</p>
+        <p>Precio: {{price}}</p>
+        <a href="products/{{_id}}">Ver mas detalles del producto</a>
+        <button onclick="addToCart('{{_id}}')">
+          Agregar al carrito
+        </button>
+      </li>
+    {{/each}}
+  </ul>
+<br />
+
+<div>
+    {{#if products.payload.hasPrevPage}}
+    <a href="products?page={{prevPage}}">
+        << Anterior</a>
+            {{/if}}
+            &nbsp;
+            {{products.payload.page}}
+            &nbsp;
+            {{#if products.payload.hasNextPage}}
+            <a href="products?page={{nextPage}}" id="nextPageLink">Siguiente >></a>
+            {{/if}}
+</div>
+</div>
+{{else}}
+<h1>No hay productos para mostrar</h1>
+{{/if}}
+</body>
+  <script src="/scripts.js"></script>
+</html>
+
+
+
+
+
