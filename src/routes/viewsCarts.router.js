@@ -1,11 +1,13 @@
 const {Router} = require('express');
 const router = Router();
 
-router.get('/:cid', async (req, res) => {
-  console.log("cartid",req.params.cid);
+router.get('/:cid?', async (req, res) => {
   try { 
-    const cid = String(req.params.cid);
-    const response = await fetch(`http://localhost:8080/api/carts/${cid}`);
+    const cid = req.params.cid;
+    const cookie = req.cookies.cart;
+    const id = cid ? cid : cookie;
+
+    const response = await fetch(`http://localhost:8080/api/carts/${id}`);
     const data = await response.json();
 
     if(data.status !== "success") {
