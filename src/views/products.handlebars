@@ -8,7 +8,10 @@
 <body>
   {{#if isValid}}
   <div>
-  <h1>Lista de Productos:</h1>
+    <a href="/profile">Ver perfil</a>
+    <a href="api/sessions/logout"><button>Cerrar sesión</button></a>
+    <h2>Bienvenid@ {{userData.first_name}}, tienes rol de {{userData.role}}</h2>
+  <h2>Lista de Productos:</h2>
   <ul>
     {{#each products.payload.docs}}
       <li>

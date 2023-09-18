@@ -31,4 +31,86 @@ const addToCart = async (productId) => {
   }
 };
 
-module.exports = addToCart;
+const login = async () => {
+  const inputEmail = document.querySelector("#email");
+  let inputEmailValue = inputEmail.value;
+  const inputPassword = document.querySelector("#password");
+  let inputPasswordValue = inputPassword.value;
+  try{
+  const responseLogin = await fetch("/api/sessions/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: inputEmailValue,
+      password: inputPasswordValue,
+    }),
+  });
+  const dataLogin = await responseLogin.json();
+  if (dataLogin.error === "usuario no encontrado") {
+    const divUserNotFound = document.querySelector(".error");
+    const pElement = document.createElement("p");
+    const textNode = document.createTextNode("Usuario no registrado");
+    pElement.appendChild(textNode);
+    pElement.style.color = "red";
+    divUserNotFound.appendChild(pElement);
+    inputEmailValue = "";
+    inputPasswordValue = "";
+    return;
+  }
+
+  if (dataLogin.error === "Password incorrecto") {
+    const divPasswordIncorrect = document.querySelector(".error");
+    const pElement = document.createElement("p");
+    const textNode = document.createTextNode(
+      "Usuario o contraseña incorrectos"
+    );
+    pElement.appendChild(textNode);
+    pElement.style.color = "red";
+    divPasswordIncorrect.appendChild(pElement);
+    inputEmailValue = "";
+    inputPasswordValue = "";
+    return;
+  }
+
+  if (dataLogin.status === "success") {
+    window.location.href = "/products";
+  }
+} catch (error) { 
+  console.error(error);
+  window.location.href = "/error"
+}
+};
+
+const register = async () => {
+  const firstName = document.querySelector("#first_name").value;
+  const lastName = document.querySelector("#last_name").value;
+  const age = document.querySelector("#age").value;
+  const inputEmail = document.querySelector("#email_register").value;
+  const inputPassword = document.querySelector("#password_register").value;
+  const dataBody = {
+    first_name: firstName,
+    last_name: lastName,
+    age: age,
+    email: inputEmail,
+    password: inputPassword,
+  }
+  const responseLogin = await fetch("/api/sessions/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dataBody),
+  });
+  const dataSession = await responseLogin.json();
+
+  if (dataSession.status === "success") {
+    alert("Usuario registrado con éxito");
+    return window.location.href = "/";
+  }
+  alert("Error al registrar usuario, por favor vuelve a intentarlo");
+};
+
+
+module.exports = { addToCart, login, register };
