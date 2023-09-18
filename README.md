@@ -32,13 +32,25 @@ DELETE /api/carts/:cid/product/:pid
 
 
 #### Views 
+-Login
+
+/
+
+-Registro del usuario
+
+/register
+
+-Perfil del usuario
+
+/profile
+
 -Lista de productos con paginación.
 
-GET /products
+/products
 
 -Detalles del producto seleccionado.
 
-GET /products/:pid
+/products/:pid
 
 -Lista los productos agregados al carrito.
 
