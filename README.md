@@ -54,4 +54,4 @@ DELETE /api/carts/:cid/product/:pid
 
 -Lista los productos agregados al carrito.
 
-GET /carts/:cid?
+/carts/:cid?
