@@ -3,6 +3,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
+    if (!req.session.user) {
+      return res.redirect("/");
+    }
+    const userData = req.session.user;
     const page = req.query.page ? Number(req.query.page) : 1;
     const limit = req.query.limit ? Number(req.query.limit) : 2;
     const nextPage = page + 1;
@@ -16,7 +20,13 @@ router.get("/", async (req, res) => {
       isValid = false;
       return res.render("products", { isValid });
     }
-    res.render("products", { products: data, isValid, nextPage, prevPage });
+    res.render("products", {
+      products: data,
+      isValid,
+      nextPage,
+      prevPage,
+      userData
+    });
   } catch (error) {
     console.error(error);
   }
