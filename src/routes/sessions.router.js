@@ -3,6 +3,8 @@ const router = express.Router();
 const { userModel } = require("../models/user.modelo.js");
 const { createHash, isValidatePassword } = require("../util/hashPassword");
 const handleError = require("../util/handleError.js");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 router.post("/register", async (req, res) => {
   //registro de usuario
@@ -37,6 +39,17 @@ router.post("/login", async (req, res) => {
       return res
         .status(400)
         .send({ status: "error", error: "valores incorrectos" });
+
+    if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+      console.log("admin");
+        const token = jwt.sign({ email, password }, 'secret', { expiresIn: '1h' })
+            res.cookie('token', token, 
+            { maxAge: 60*60*1000,
+              httpOnly: true 
+            })
+            console.log(document.cookie)
+            return res.redirect('/')
+      }
 
     const user = await userModel.findOne(
       { email: email },
