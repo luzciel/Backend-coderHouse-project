@@ -1,10 +1,12 @@
 const express = require("express");
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
 const MongoStore = require('connect-mongo');
 const handlebars = require("express-handlebars");
 const path = require("path");
+const passport = require("passport");
+const { inicializePassport } = require("./config/passport.config");
+const {connectionMongodb} = require("./database");
 const app = express();
 const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
@@ -19,14 +21,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const connectionMongodb = async () => {
-  try {
-    await mongoose.connect( URL_MONGODB, { useNewUrlParser: true, useUnifiedTopology: true});
-    console.log("successful connection");
-  } catch (error) {
-    console.error(error);
-  }
-};
 connectionMongodb();
 
 app.use(session({
@@ -40,10 +34,14 @@ app.use(session({
   saveUninitialized: true,
 }));
 
+inicializePassport(passport)
+app.use(passport.initialize());
+
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use("/products", viewsProductRouter);
 app.use("/carts", viewsCartsRouter);
 app.use("/", viewsSessionsRouter);
