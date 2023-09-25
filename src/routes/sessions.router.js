@@ -1,68 +1,45 @@
 const express = require("express");
 const router = express.Router();
-const { userModel } = require("../models/user.modelo.js");
-const { createHash, isValidatePassword } = require("../util/hashPassword");
+const passport = require("passport");
 const handleError = require("../util/handleError.js");
 
-router.post("/register", async (req, res) => {
-  //registro de usuario
-  try {
-    let { first_name, last_name, email, age, password } = req.body;
-    if (!first_name || !last_name || !email || !age || !password) {
-      return res.status(400).send({ status: "error", error: "Faltan datos." });
-    }
-    let role = "usuario";
-    if (email === "adminCoder@coder.com" && password === "adminCod3r123")
-      role = "administrador";
-    const hashedPassword = createHash(password);
-    let user = await userModel.create({
-      first_name,
-      last_name,
-      email,
-      age,
-      password: hashedPassword,
-      role,
-    });
+
+router.post("/register", passport.authenticate("register", { failureRedirect: "/api/sessions/failregister" }), async (req, res) => {
     res.send({ status: "success", payload: "Usuario registrado con éxito" });
-  } catch (error) {
-    handleError(res, error);
-  }
 });
 
-router.post("/login", async (req, res) => {
-  //login de usuario
-  try {
-    const { email, password } = req.body;
-    if (!email || !password)
-      return res
-        .status(400)
-        .send({ status: "error", error: "valores incorrectos" });
+router.get("/failregister", (req, res) => {
+  res.status(400).send({ status: "error", error: "Ocurrio un error" });
+})
 
-    const user = await userModel.findOne(
-      { email: email },
-      { email: 1, first_name: 1, last_name: 1, password: 1, role: 1 }
-    );
+router.post("/login", passport.authenticate("login", { failureRedirect: "/api/sessions/faillogin" }), async (req, res) => {
 
-    if (!user)
-      return res
-        .status(400)
-        .send({ status: "error", error: "usuario no encontrado" });
-    if (!isValidatePassword(user, password))
-      return res
-        .status(403)
-        .send({ status: "error", error: "Password incorrecto" });
-    const userData = { ...user._doc };
-    delete userData.password;
-    req.session.user = userData;
+    const userData = {
+      first_name: req.user.first_name,
+      last_name: req.user.last_name,
+      age: req.user.age,
+      email: req.user.email,
+      role: req.user.role
+    }
+    req.session.user = userData
     res.send({ status: "success", payload: userData });
-  } catch (error) {
-    handleError(res, error);
-  }
 });
+
+router.get("/faillogin", (req, res) => {
+  res.status(400).send({ status: "error", error: "Ocurrio un error" });
+})
 
 router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
+
+router.get("/github", passport.authenticate("github",{scope: ["user:email"]}), async (req, res) => {})
+
+router.get("/githubcallback", passport.authenticate("github", { failureRedirect: "/error"
+}), async (req, res) => {
+  req.session.user = req.user
+  res.redirect("/products");
+})
 
 module.exports = router;
