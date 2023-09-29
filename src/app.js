@@ -36,6 +36,7 @@ app.use(session({
 
 inicializePassport(passport)
 app.use(passport.initialize());
+app.use(passport.session())
 
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
