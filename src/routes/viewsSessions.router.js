@@ -1,25 +1,29 @@
 const express = require('express');
 const router = express.Router();
+const passport = require("passport");
+
+const authenticateJWT = passport.authenticate("jwt", { session: false })
 
 router.get('/register', (req, res) => {
-  if (req.session.user) {
+  const cookieUserData = req.cookies?.userData;
+  if (cookieUserData) {
     return res.redirect('/products');
   }
   res.render('register');
 })
 
 router.get('/', (req, res) => {
-  if (req.session.user) {
+  const cookieUserData = req.cookies?.userData;
+  if (cookieUserData) {
     return res.redirect('/products');
   }
   res.render('login');
 })
 
-router.get('/profile', (req, res) => {
-  if (!req.session.user) {
-      return res.redirect('/');
-  }
-  const { first_name, last_name, email, role } = req.session.user;
+router.get('/profile', authenticateJWT, (req, res) => {
+  const cookieUserData = req.cookies?.userData;
+  const userData = JSON.parse(cookieUserData);
+  const { first_name, last_name, email, role } = userData;
   
   res.render('profile', { first_name, last_name, email, role });
 });
@@ -27,6 +31,5 @@ router.get('/profile', (req, res) => {
 router.get("/error", (req, res) => {
   res.render("error")
 })
-
 
 module.exports = router;

@@ -1,12 +1,15 @@
 const { Router } = require("express");
 const router = Router();
+const passport = require("passport");
 
-router.get("/", async (req, res) => {
+router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
+  const cookieUserData = req.cookies?.userData;
   try {
-    if (!req.session.user) {
+    if (!cookieUserData) {
       return res.redirect("/");
     }
-    const userData = req.session.user;
+
+    const userData = JSON.parse(cookieUserData);
     const page = req.query.page ? Number(req.query.page) : 1;
     const limit = req.query.limit ? Number(req.query.limit) : 2;
     const nextPage = page + 1;
