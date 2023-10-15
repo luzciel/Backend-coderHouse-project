@@ -6,7 +6,7 @@ const handlebars = require("express-handlebars");
 const path = require("path");
 const passport = require("passport");
 const { inicializePassport } = require("./config/passport.config");
-const {connectionMongodb} = require("./database");
+const {connectionMongodb} = require("./dao/connectionDatabase.js");
 const app = express();
 const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
@@ -14,8 +14,9 @@ const viewsSessionsRouter = require("./routes/viewsSessions.router");
 const viewsProductRouter = require("./routes/viewsProducts.router");
 const viewsCartsRouter = require("./routes/viewsCarts.router");
 const sessionsRouter = require("./routes/sessions.router");
-const PORT = 8080;
-const URL_MONGODB = "mongodb+srv://luzcielm:luzcielm@cluster0.4wsbetm.mongodb.net/ecommerce?retryWrites=true&w=majority";
+const config = require("./config/config.js");
+const URL_MONGODB = config.MONGO_URL
+const PORT = config.PORT ?? 8080;
 
 app.use(cookieParser());
 app.use(express.json());
