@@ -1,11 +1,14 @@
 const passport = require("passport");
 const local = require("passport-local");
 const githubStrategy = require("passport-github2");
-const { userModel } = require("../models/user.modelo.js");
+const { userServices } = require("../repositories/index.js");
 const { createHash, isValidatePassword } = require("../util/hashPassword.js");
+const config = require("./config.js");
 const jwt = require("passport-jwt");
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
+const ADMIN_EMAIL = config.ADMIN_EMAIL;
+const ADMIN_PASSWORD = config.ADMIN_PASSWORD;
 
 const localStrategy = local.Strategy;
 const inicializePassport = () => {
@@ -22,16 +25,15 @@ const inicializePassport = () => {
           return done(null, false);
         }
         try {
-          let user = await userModel.findOne({ email: username });
+          let user = await userServices.getUser(username);
           if (user) {
             return done(null, false);
           }
           let role = "usuario";
           const hashedPassword = createHash(password);
-
-          if (email === "adminCoder@coder.com" && password === "adminCod3r123")
+          if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
             role = "administrador";
-
+          }
           const newUser = {
             first_name,
             last_name,
@@ -40,7 +42,7 @@ const inicializePassport = () => {
             password: hashedPassword,
             role,
           };
-          let userCreated = await userModel.create(newUser);
+          let userCreated = await userServices.newUser(newUser);
           return done(null, userCreated);
         } catch (error) {
           return done("Error al obtener el ususario:" + error);
@@ -55,7 +57,7 @@ const inicializePassport = () => {
       { usernameField: "email" },
       async (username, password, done) => {
         try {
-          let user = await userModel.findOne({ email: username });
+          let user = await userServices.getUser(username);
           if (!user) {
             console.error("Usuario no encontrado");
             return done(null, false);
@@ -83,7 +85,7 @@ const inicializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          let user = await userModel.findOne({ email: profile._json.email });
+          let user = await userServices.getUser(profile._json.email);
           if (!user) {
             let newUser = {
               first_name: profile._json.name,
@@ -93,7 +95,7 @@ const inicializePassport = () => {
               password: "",
               role: "usuario",
             };
-            let result = await userModel.create(newUser);
+            let result = await userServices.newUser(newUser);
             done(null, result);
           } else {
             done(null, user);
@@ -128,7 +130,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  let user = userModel.findById(id);
+  let user = userServices.getUserId(id);
   done(null, user);
 });
 
