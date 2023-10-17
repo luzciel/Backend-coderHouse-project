@@ -1,4 +1,3 @@
-const { userModel } = require("../dao/models/user.modelo.js");
 const { cartServices, userServices } = require('../repositories/index.js');
 const handleError = require("../util/handleError.js");
 
@@ -44,28 +43,8 @@ const getCart = async (req, res) => {
 const addOneProductToCart = async (req, res) => {
   const cartId = String(req.params.cid);
   const productId = String(req.params.pid);
-
   try {
-
-    let cart = await cartServices.getCartId(cartId);
-
-    if (!cart) {
-      const notFoundInBd = responseNotFound(id);
-      res.status(404).send(notFoundInBd);
-    }
-
-    const hasProduct = cart.products.find((product) => {
-      return product.product.toString() == productId.toString();
-    });
-
-    if (!hasProduct) {
-      const updateData = { product: productId, quantity: 1 };
-      cart.products.push(updateData);
-    } else {
-      hasProduct.quantity += 1;
-    }
-
-    const updateCart = await cartServices.updateCart(cartId, cart);
+    const updateCart = await cartServices.addOneProduct(cartId, productId);
 
     res.status(200).send({ status: "success", payload: updateCart });
   } catch (error) {
