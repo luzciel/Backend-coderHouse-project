@@ -34,9 +34,9 @@ class Cart {
     }
   };
 
-  addOneProduct = async (cartId, cart) => {
+  addOneProduct = async (cartId, cartUpdate) => {
     try {
-      let cart = await cartModel.updateOne({ _id: cartId}, cart);
+      let cart = await cartModel.updateOne({ _id: cartId}, cartUpdate);
       return cart;
     } catch (error) {
       console.error(error);

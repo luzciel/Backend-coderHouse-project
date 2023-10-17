@@ -18,9 +18,22 @@ class CartRepository {
     return cart;
   };
 
-  addOneProduct = async (cartId) => {
-    const cart = await this.dao.addOneProduct(cartId);
-    return cart;
+  addOneProduct = async (cartId, productId) => {
+    let cart = await this.dao.getCartId(cartId);
+    if (!cart) return cart
+    
+    const hasProduct = cart.products.find((product) => {
+      return product.product.toString() == productId.toString();
+    });
+
+    if (!hasProduct) {
+      const updateData = { product: productId, quantity: 1 };
+      cart.products.push(updateData);
+    } else {
+      hasProduct.quantity += 1;
+    }
+    const updateCart = await this.dao.addOneProduct(cartId, cart);
+    return updateCart;
   };
 
   deleteProduct = async (cartId, productId) => {
