@@ -1,5 +1,3 @@
-const ContactTDO = require('../dao/DTOs/product.dto.js');
-
 class ProductRepository {
   constructor(dao) {
     this.dao = dao;
@@ -24,8 +22,8 @@ class ProductRepository {
     return result;
   }
 
-  updateProduct = async (id, body) => {
-    let result = await this.dao.updateProduct(id, body);
+  updateStock = async (id, newStock) => {
+    let result = await this.dao.updateStock(id, newStock);
     return result;
   }
 }

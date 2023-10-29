@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const cartsControllert = require("../controllers/cartsControllert.js");
-const jwt = require("jsonwebtoken");
+const { authorization } = require("../middlewares/middlewares.js");
 const passport = require("passport");
-
-router.post("/", passport.authenticate("jwt", { session: false }), cartsControllert.createCart);
+const authenticateJWT = passport.authenticate("jwt", { session: false });
+router.post("/", authenticateJWT, cartsControllert.createCart);
 
 //Lista los productos que pertenezcan al carrito con el parámetro cid proporcionados
 router.get("/:cid", cartsControllert.getCart);
 
 //agrega un producto al carrito
-router.post("/:cid/product/:pid", cartsControllert.addOneProductToCart);
+router.post("/:cid/product/:pid", authenticateJWT, authorization("usuario"), cartsControllert.addOneProductToCart);
 
 //elimina del carrito el producto seleccionado
 router.delete("/:cid/product/:pid", cartsControllert.deleteProductFromTheCart);
@@ -23,5 +23,7 @@ router.put("/:cid/product/:pid", cartsControllert.updateQuantityOfProductsInCart
 
 //elimina todos los productos del carrito
 router.delete("/:cid", cartsControllert.deleteAllProductsFromCart);
+
+router.get("/:cid/purchase", authenticateJWT, cartsControllert.createPurcharse);
 
 module.exports = router;

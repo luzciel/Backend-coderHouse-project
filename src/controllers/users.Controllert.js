@@ -17,9 +17,6 @@ const login = (req, res) => {
   const email = req.user.email;
   const password = req.user.password;
 
-  let token = jwt.sign({ email, password }, "coderSecret", {
-    expiresIn: "24h",
-  });
   const userData = {
     first_name: req.user.first_name,
     last_name: req.user.last_name,
@@ -27,6 +24,10 @@ const login = (req, res) => {
     email,
     role: req.user.role
   }
+
+  let token = jwt.sign({ email, password, role: userData.role }, "coderSecret", {
+    expiresIn: "24h",
+  });
 
   res
     .cookie("coderCookieToken", token, {

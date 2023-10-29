@@ -1,5 +1,5 @@
-const { cartModel } = require("../dao/models/cart.model.js");
-const { userModel } = require("../dao/models/user.modelo.js");
+const { cartModel } = require("../models/cart.model.js");
+const { userModel } = require("../models/user.modelo.js");
 
 
 class Cart {
