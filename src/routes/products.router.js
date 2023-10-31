@@ -1,15 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const productsController = require("../controllers/productsControllert");
+const {authorization} = require("../middlewares/middlewares");
+const passport = require("passport");
 
-router.get("/", productsController.getAllProducts);
+const getAllProducts = require("../controllers/products/getAllProducts");
+const getOneProduct = require("../controllers/products/getOneProduct");
+const createProduct = require("../controllers/products/createProduct");
+const deleteProduct = require("../controllers/products/deleteProduct");
+const updateProduct = require("../controllers/products/updateProduct");
 
-router.get("/:pid", productsController.getOneProduct);
+const authenticateJWT = passport.authenticate("jwt", { session: false });
 
-router.post("/", productsController.createProduct);
+router.get("/", getAllProducts);
 
-router.delete("/:pid", productsController.deleteProduct);
+router.get("/:pid", getOneProduct);
 
-router.put("/:pid", productsController.updateProduct);
+router.post("/", authenticateJWT, authorization("administrador"), createProduct);
+
+router.delete("/:pid", authenticateJWT, authorization("administrador"),  deleteProduct);
+
+router.put("/:pid", authenticateJWT, authorization("administrador"),  updateProduct);
 
 module.exports = router;

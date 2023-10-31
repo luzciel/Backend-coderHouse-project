@@ -55,3 +55,29 @@ DELETE /api/carts/:cid/product/:pid
 -Lista los productos agregados al carrito.
 
 /carts/:cid?
+
+### Correo de confirmación
+![](./img/email-ticket.png)
+
+### SMS de confirmación
+![](./img/SMS-ticket.jpg)
+
+
+### Router purchase 
+![](./img/router-purchase-1.png)
+![](./img/router-purchase-2.png)
+
+### Router current 
+![](./img/router-current.png)
+
+### Postman
+api/products
+![](./img/postman-5.png)
+![](./img/postman-4.png)
+![](./img/postman-2.png)
+![](./img/postman-3.png)
+
+api/users
+![](./img/postman-7.png)
+![](./img/postman-6.png)
+![](./img/postman-1.png)

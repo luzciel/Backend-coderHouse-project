@@ -112,5 +112,21 @@ const register = async () => {
   alert("Error al registrar usuario, por favor vuelve a intentarlo");
 };
 
+const buyCart = async (idCart) => {
+  try {
+    const responseCart = await fetch(`/api/carts/${idCart}/purchase`, {
+      method: "POST",
+    });
 
-module.exports = { addToCart, login, register };
+    if (!responseCart.ok) {
+      throw new Error("Error al generar la compra");
+    }
+
+    alert("Compra realizada con exito");
+
+    }catch (error) {
+      console.error(error);
+  }
+}
+
+module.exports = { addToCart, login, register, buyCart };

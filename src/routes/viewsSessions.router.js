@@ -1,15 +1,18 @@
 const express = require('express');
-const router = express.Router();
 const passport = require("passport");
-const viewsSessionsController = require ('../controllers/viewsSessionsControllert.js');
+const register = require('../controllers/viewsSessions/register');
+const login = require('../controllers/viewsSessions/login');
+const perfile = require('../controllers/viewsSessions/perfile');
+const error = require('../controllers/viewsSessions/error');
 const authenticateJWT = passport.authenticate("jwt", { session: false })
+const router = express.Router();
 
-router.get('/register', viewsSessionsController.register);
+router.get('/register', register);
 
-router.get('/', viewsSessionsController.login)
+router.get('/', login)
 
-router.get('/profile', authenticateJWT, viewsSessionsController.perfile);
+router.get('/profile', authenticateJWT, perfile);
 
-router.get("/error", viewsSessionsController.error);
+router.get("/error", error);
 
 module.exports = router;

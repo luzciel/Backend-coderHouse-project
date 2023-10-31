@@ -1,8 +1,7 @@
 const {Router} = require('express');
 const router = Router();
-const reviwesController = require('../controllers/viewsCartsControllert.js');
+const getCart = require('../controllers/viewsCarts/getCart.js');
 
-router.get('/:cid?', reviwesController.getCart)
-
+router.get('/:cid?', getCart)
 
 module.exports = router;

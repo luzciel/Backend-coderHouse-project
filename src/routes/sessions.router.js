@@ -1,42 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const usersController = require("../controllers/users.Controllert.js");
+const register = require("../controllers/users/register");
+const login = require("../controllers/users/login");
+const failLogin = require("../controllers/users/failLogin");
+const failRegister = require("../controllers/users/failRegister");
+const logout = require("../controllers/users/logout");
+const githubcallback = require("../controllers/users/githubcallback");
+const current = require("../controllers/users/current");
 
-router.post(
-  "/register",
-  passport.authenticate("register", {
-    failureRedirect: "/api/sessions/failregister",
-  }), usersController.register);
+router.post( "/register", passport.authenticate("register", { failureRedirect: "/api/sessions/failregister"}), register);
 
-router.get("/failregister", usersController.failRegister);
+router.get("/failregister", failRegister);
 
-router.post(
-  "/login",
-  passport.authenticate("login", {
-    failureRedirect: "/api/sessions/faillogin",
-  }), usersController.login
-);
+router.post( "/login", passport.authenticate("login", { failureRedirect: "/api/sessions/faillogin"}), login );
 
-router.get("/faillogin", usersController.failLogin);
+router.get("/faillogin", failLogin);
 
-router.get("/logout", usersController.logout);
+router.get("/logout", logout);
 
-router.get(
-  "/github",
-  passport.authenticate("github", { scope: ["user:email"] }),
+router.get("/github", passport.authenticate("github", { scope: ["user:email"] }),
   async (req, res) => {}
 );
 
-router.get(
-  "/githubcallback",
-  passport.authenticate("github", { failureRedirect: "/error" }), usersController.githubcallback
+router.get( "/githubcallback", passport.authenticate("github", { failureRedirect: "/error" }),githubcallback
 );
 
-router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }), usersController.current
-);
-
+router.get( "/current", passport.authenticate("jwt", { session: false }), current );
 
 module.exports = router;

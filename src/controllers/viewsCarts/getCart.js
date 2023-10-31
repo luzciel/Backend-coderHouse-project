@@ -11,12 +11,12 @@ const getCart = async (req, res) => {
       let isValid = false
       return res.render('cart', { isValid });
     }
+    
     const products = data?.payload[0]?.products;
     let isValid = true ;
-    res.render('cart', { cart: products, isValid });
+    res.render('cart', { cart: products, isValid, idCart: id });
   }catch (error) {
     console.error(error);
   }
 }
-
-module.exports = {getCart};
+module.exports = getCart ;

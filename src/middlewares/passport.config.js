@@ -3,7 +3,7 @@ const local = require("passport-local");
 const githubStrategy = require("passport-github2");
 const { userServices } = require("../repositories/index.js");
 const { createHash, isValidatePassword } = require("../util/hashPassword.js");
-const config = require("./config.js");
+const config = require("../config/config.js");
 const jwt = require("passport-jwt");
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
@@ -116,6 +116,7 @@ const inicializePassport = () => {
       },
       async (jwt_payload, done) => {
         try {
+          const user = jwt_payload
           return done(null, jwt_payload);
         } catch (err) {
           return done(err);
