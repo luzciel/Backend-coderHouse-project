@@ -1,7 +1,6 @@
 const config = require("../config/config.js");
 const nodemailer = require("nodemailer");
 const HtmlTemplate = require("./htmlTemplate.js");
-console.log("HtmlTemplate",HtmlTemplate);
 
 const transporter = nodemailer.createTransport({
   service: "Gmail",

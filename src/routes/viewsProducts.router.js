@@ -1,10 +1,13 @@
 const { Router } = require("express");
-const router = Router();
 const passport = require("passport");
-const viewsProductsController = require ('../controllers/viewsProductsControllert.js');
+const getProducts = require("../controllers/viewsProducts/getProducts");
+const getOneProduct = require("../controllers/viewsProducts/getOneProduct");
 
-router.get("/", passport.authenticate("jwt", { session: false }), viewsProductsController.getProducts);
+const router = Router();
+const authenticateJWT = passport.authenticate("jwt", { session: false });
 
-router.get("/:pid", viewsProductsController.getOneProduct);
+router.get("/", authenticateJWT, getProducts);
+
+router.get("/:pid", authenticateJWT, getOneProduct);
 
 module.exports = router;
