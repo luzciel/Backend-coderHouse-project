@@ -5,6 +5,7 @@ const { userServices } = require("../repositories/index.js");
 const { createHash, isValidatePassword } = require("../util/hashPassword.js");
 const config = require("../config/config.js");
 const jwt = require("passport-jwt");
+
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 const ADMIN_EMAIL = config.ADMIN_EMAIL;
@@ -45,7 +46,7 @@ const inicializePassport = () => {
           let userCreated = await userServices.newUser(newUser);
           return done(null, userCreated);
         } catch (error) {
-          return done("Error al obtener el ususario:" + error);
+          return done("Error al obtener el usuario:" + error);
         }
       }
     )

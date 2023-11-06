@@ -1,5 +1,8 @@
 const {productService} = require("../../repositories/index.js");
 const handleError = require("../../util/handleError.js");
+const CustomError = require("../../services/error/CustomError.js");
+const {generateProductErrorInfo} = require("../../services/error/info.js");
+const EErrors = require("../../services/error/enums.js");
 const createProduct = async (req, res) => {
   try {
     const body = req.body;
@@ -13,10 +16,12 @@ const createProduct = async (req, res) => {
       !body.stock ||
       !body.category
     ) {
-      res.status(400).send({
-        error:
-          "Debe proporcionar todos los campos (title, price, description, code, stock, category).",
-      });
+      CustomError.createError({
+        name: "Product creation error",
+        cause: generateProductErrorInfo(body),
+        message: "Error Trying to create product",
+        code: EErrors.INVALID_TYPE_ERROR
+      })
     } else {
       const saveProduct = await productService.createProduct(body);
       res.status(200).send([{ status: "success", payload: saveProduct }]);

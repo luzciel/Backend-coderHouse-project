@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
+const errorHandler = require("./middlewares/errors/index.js");
 const MongoStore = require('connect-mongo');
 const handlebars = require("express-handlebars");
 const path = require("path");
@@ -14,13 +15,16 @@ const viewsSessionsRouter = require("./routes/viewsSessions.router");
 const viewsProductRouter = require("./routes/viewsProducts.router");
 const viewsCartsRouter = require("./routes/viewsCarts.router");
 const sessionsRouter = require("./routes/sessions.router");
+const mockingproducts = require("./routes/mockingProduct.router");
 const config = require("./config/config.js");
+
 const URL_MONGODB = config.MONGO_URL
 const PORT = config.PORT ?? 8080;
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(errorHandler);
 
 connectionMongodb();
 
@@ -34,6 +38,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+
 
 inicializePassport(passport)
 app.use(passport.initialize());
@@ -51,6 +56,7 @@ app.use("/", viewsSessionsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use("/api/mockingproducts", mockingproducts)
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

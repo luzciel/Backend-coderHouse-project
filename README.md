@@ -56,6 +56,13 @@ DELETE /api/carts/:cid/product/:pid
 
 /carts/:cid?
 
+### Router mockingproducts
+![](./img/router-mockingproducts.png)
+
+
+### Manejo de errores
+![](./img/error-trying-create-product.png)
+
 ### Correo de confirmación
 ![](./img/email-ticket.png)
 
