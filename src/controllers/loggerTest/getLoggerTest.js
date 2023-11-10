@@ -4,7 +4,7 @@ const getLoggerTest = (req, res) => {
   req.logger.info(`soy un log info`);
   req.logger.http(`soy un log http`);
   req.logger.debug(`soy un log debug`);
-  req.logger.verbose(`soy un log fatal`);
+  req.logger.verbose(`soy un log verbose`);
 
   res.status(200).send({ status: "success", payload: "Logger Test" });
 }

@@ -56,6 +56,13 @@ DELETE /api/carts/:cid/product/:pid
 
 /carts/:cid?
 
+### Loggers de producción en la terminal
+![](./img/loggertest-prod.png)
+
+### Loggers de desarrollo en la terminal
+![](./img/loggertest-dev.png)
+
+
 ### Router mockingproducts
 ![](./img/router-mockingproducts.png)
 
