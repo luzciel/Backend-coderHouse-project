@@ -16,7 +16,7 @@ const getCart = async (req, res) => {
     let isValid = true ;
     res.render('cart', { cart: products, isValid, idCart: id });
   }catch (error) {
-    console.error(error);
+    req.logger.error(error);
   }
 }
 module.exports = getCart ;

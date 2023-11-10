@@ -14,7 +14,7 @@ const getOneProduct = async (req, res) => {
   res.render("product", { product: data, isValid });
   
 } catch (error) {
-  console.error(error);
+  req.logger.error(error);
 }
 }
 module.exports = getOneProduct;

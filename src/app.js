@@ -16,8 +16,9 @@ const viewsProductRouter = require("./routes/viewsProducts.router");
 const viewsCartsRouter = require("./routes/viewsCarts.router");
 const sessionsRouter = require("./routes/sessions.router");
 const mockingproducts = require("./routes/mockingProduct.router");
+const loggerTest = require('./routes/loggerTest.router.js')
 const config = require("./config/config.js");
-
+const logger = require("./util/logger/logger.js");
 const URL_MONGODB = config.MONGO_URL
 const PORT = config.PORT ?? 8080;
 
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorHandler);
+app.use(logger);
 
 connectionMongodb();
 
@@ -56,7 +58,8 @@ app.use("/", viewsSessionsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
-app.use("/api/mockingproducts", mockingproducts)
+app.use("/api/mockingproducts", mockingproducts);
+app.use("/loggertest", loggerTest);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
