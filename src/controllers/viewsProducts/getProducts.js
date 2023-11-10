@@ -29,7 +29,7 @@ const getProducts = async (req, res) => {
         userData
       });
   } catch (error) {
-    console.error(error);
+      req.logger.error(error);
   }
 }
 
