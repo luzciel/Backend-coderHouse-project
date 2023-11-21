@@ -1,6 +1,7 @@
 
 const jwt = require("jsonwebtoken");
-
+const config = require("../../config/config.js");
+const KEY_JWT = config.KEY_JWT;
 const login = (req, res) => {
   const email = req.user.email;
   const password = req.user.password;
@@ -13,7 +14,7 @@ const login = (req, res) => {
     role: req.user.role
   }
 
-  let token = jwt.sign({ email, password, role: userData.role }, "coderSecret", {
+  let token = jwt.sign({ email, password, role: userData.role }, KEY_JWT, {
     expiresIn: "24h",
   });
 

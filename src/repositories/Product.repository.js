@@ -22,6 +22,10 @@ class ProductRepository {
     return result;
   }
 
+  updateProduct = async (id, body) => {
+    let result = await this.dao.updateProduct(id, body);
+    return result;
+  }
   updateStock = async (id, newStock) => {
     let result = await this.dao.updateStock(id, newStock);
     return result;

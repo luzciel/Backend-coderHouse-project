@@ -17,12 +17,17 @@ const addToCart = async (productId) => {
         method: "POST",
       }
     );
+    const dataAddToCart = await responseAddToCart.json();
+
+    if(dataAddToCart.payload === "forbidden") {
+      alert("No estas autorizado para agregar este producto");
+      throw new Error("Error al agregar el producto al carrito");
+    }
 
     if (!responseAddToCart.ok) {
       throw new Error("Error al agregar el producto al carrito");
     }
 
-    const dataAddToCart = await responseAddToCart.json();
     if (dataAddToCart.status === "success") {
       alert("Producto agregado al carrito");
     }
@@ -66,6 +71,7 @@ const login = async () => {
     const textNode = document.createTextNode(
       "Usuario o contraseña incorrectos"
     );
+
     pElement.appendChild(textNode);
     pElement.style.color = "red";
     divPasswordIncorrect.appendChild(pElement);
@@ -129,4 +135,87 @@ const buyCart = async (idCart) => {
   }
 }
 
-module.exports = { addToCart, login, register, buyCart };
+const passwordRecovery = async () => {
+  const inputEmail = document.querySelector("#email");
+  let inputEmailValue = inputEmail.value;
+  try {
+    const responseRecovery = await fetch("/api/sessions/passwordrecovery", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: inputEmailValue,
+      }),
+    });
+    const dataRecovery = await responseRecovery.json();
+
+    if (dataRecovery.payload === "Usuario no encontrado") {
+      const divUserNotFound = document.querySelector(".error");
+      const pElement = document.createElement("p");
+      const textNode = document.createTextNode("Usuario no registrado");
+      pElement.appendChild(textNode);
+      pElement.style.color = "red";
+      divUserNotFound.appendChild(pElement);
+      inputEmailValue = "";
+      return;
+    }
+
+    if (dataRecovery.status === "success") {
+      alert("Se ha enviado un correo para restablecer la contraseña");
+    }
+   
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const restorePassword = async (token) => {
+  const inputPassword = document.querySelector("#restorePassword");
+  let inputPasswordValue = inputPassword.value;
+  const divPasswordIncorrect = document.querySelector(".error");
+  divPasswordIncorrect.innerHTML = "";
+  try {
+      const responseRestore = await fetch(`/api/sessions/restore/${token}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: inputPasswordValue,
+        }),
+      });
+
+      const dataRestore = await responseRestore.json();
+      
+      if(dataRestore.payload === "Token expirado"){
+        alert("El token ha expirado");
+        return window.location.href = "/passwordrecovery"
+      }
+
+      if(dataRestore.payload === "Contraseña dublicada"){
+        const pElement = document.createElement("p");
+        const textNode = document.createTextNode("La nueva contraseña no puede ser igual a la contraseña anterior");
+        pElement.appendChild(textNode);
+        pElement.style.color = "red";
+        divPasswordIncorrect.appendChild(pElement);
+        inputPasswordValue = "";
+        return
+      }
+
+      if (dataRestore.status === "success") {
+        alert("Se ha restablecido la contraseña");
+        window.location.href = "/"
+        return
+      }
+
+      if(!dataRestore.ok){
+        alert("Error al restablecer la contraseña");
+        return
+      }
+  } catch (error) {
+          console.error(error);
+    }
+};
+
+module.exports = { addToCart, login, register, buyCart, passwordRecovery, restorePassword };

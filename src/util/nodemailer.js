@@ -33,7 +33,7 @@ const purchaseConfirmationEmail = ({
   totalTicket
 }) => {
   const { purchaser } = createTicket;
-  const message = HtmlTemplate.createMessageEmail({
+  const message = HtmlTemplate.createMessagePurchaseConfirmation({
     availableProduct,
     createTicket,
     totalTicket
@@ -43,6 +43,13 @@ const purchaseConfirmationEmail = ({
   sendEmail({ emailUser: purchaser, message, subject });
 };
 
+const restorePasswordEmail = ({ email, linkRestore }) => {
+  const message = HtmlTemplate.createMessageRestorePassword({ linkRestore });
+  const subject = "Restablecer contraseña";
+  
+  sendEmail({ emailUser: email, message, subject });
+};
 module.exports = {
   purchaseConfirmationEmail,
+  restorePasswordEmail
 };

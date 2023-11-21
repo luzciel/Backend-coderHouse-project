@@ -1,11 +1,9 @@
-const authorization = (role) => {
+const authorization = (...role) => {
   return async (req, res, next) => {
-    if (req.user.role !== role) {
-      if (role === 'administrador') return res.status(403).send({ error: 'only admin can access' })
-      if (role === 'usuario') return res.status(403).send({ error: 'only user can access' })
+    const rolAutorizado = req.user.role
+    if (!role.includes(rolAutorizado)) {
       return res.status(403).send({ error: 'forbidden' })
     }
-
     next()
   }
 }

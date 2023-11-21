@@ -9,7 +9,14 @@ const deleteProduct = async (req, res) => {
        res.status(400).send({ status: "error", payload: "ID no válido" });
        return;
      } else {
-       const deleteProduct = await productService.deleteOneProduct(id);
+        const product = await productService.getOneProduct(id)
+
+        if(product.owner !== req.user.email && req.user.role !== "administrador") {
+          res.status(403).send({ status: "error", payload: "forbidden" });
+          return;
+        }
+
+        const deleteProduct = await productService.deleteOneProduct(id);
  
        if (deleteProduct.deletedCount === 0) {
          res.status(404).send([

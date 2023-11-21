@@ -30,6 +30,26 @@ PUT /api/carts/:cid/product/:pid
 
 DELETE /api/carts/:cid/product/:pid
 
+#### User
+POST /api/users/register
+
+GET /api/users/failregister
+
+POST /api/users/login
+
+GET /api/users/faillogin
+
+GET /api/users/logout
+
+GET /api/users/current
+
+PATCH /api/users/premium/:uid
+
+POST /api/users/passwordrecovery
+
+PATCH /api/users/restore/:token
+
+PATCH /api/users/premium/:uid 
 
 #### Views 
 -Login
@@ -55,6 +75,37 @@ DELETE /api/carts/:cid/product/:pid
 -Lista los productos agregados al carrito.
 
 /carts/:cid?
+
+
+### Restablecimiento de contraseña
+
+Login con link para restablecer contraseña
+![](./img/login.png)
+
+Ingresar correo para restablecer contraseña
+![](./img/password-recovery.png)
+
+Email con link para restablecer contraseña
+![](./img/email-reset-password.png)
+
+Restablecimiento de contraseña exitoso
+![](./img/password-reset.png)
+
+Error al ingresar la misma contraseña
+![](./img/password-invalid.png)
+
+Link expirado
+![](./img/link-expired.png)
+
+### Crear producto con owner premium
+![](./img/create-product-owner-premium.png)
+
+### Cambio de rol premium a usuario y viceversa
+![](./img/change-rol-to-premium.png)
+![](./img/change-rol-to-usuario.png)
+
+### Error al ingresar un producto al carrito cuando se es el owner del producto
+![](./img/error-you-ar-not-authorized-to-add-product.png)
 
 ### Loggers de producción en la terminal
 ![](./img/loggertest-prod.png)
