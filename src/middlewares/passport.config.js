@@ -10,6 +10,7 @@ const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 const ADMIN_EMAIL = config.ADMIN_EMAIL;
 const ADMIN_PASSWORD = config.ADMIN_PASSWORD;
+const KEY_JWT = config.KEY_JWT;
 
 const localStrategy = local.Strategy;
 const inicializePassport = () => {
@@ -113,7 +114,7 @@ const inicializePassport = () => {
     new JWTStrategy(
       {
         jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey: "coderSecret",
+        secretOrKey: KEY_JWT,
       },
       async (jwt_payload, done) => {
         try {

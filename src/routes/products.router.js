@@ -15,10 +15,10 @@ router.get("/", getAllProducts);
 
 router.get("/:pid", getOneProduct);
 
-router.post("/", authenticateJWT, authorization("administrador"), createProduct);
+router.post("/", authenticateJWT, authorization("administrador", "premium"), createProduct);
 
-router.delete("/:pid", authenticateJWT, authorization("administrador"),  deleteProduct);
+router.delete("/:pid", authenticateJWT, authorization("administrador", "usuario"),  deleteProduct);
 
-router.put("/:pid", authenticateJWT, authorization("administrador"),  updateProduct);
+router.put("/:pid", authenticateJWT, authorization("administrador", "usuario"),  updateProduct);
 
 module.exports = router;

@@ -41,7 +41,7 @@ class HtmlTemplate {
     return tableHTML;
   }
 
-  static createMessageEmail = ({   availableProduct,
+  static createMessagePurchaseConfirmation = ({   availableProduct,
     createTicket,
     totalTicket,}) => {
       const { code } = createTicket;
@@ -64,6 +64,16 @@ class HtmlTemplate {
       return message
   }
 
-}
+  static createMessageRestorePassword = ({ linkRestore }) => {
+    const message = `
+      <div>
+        <p>Te adjuntamos el link para restablecer tu contraseña, este link caducara en 1 hora</p>
+        <a href="${linkRestore}">Restablecer contraseña</a>
+      </div>
+    `;
 
+    return message
+  
+  }
+}
 module.exports = HtmlTemplate;

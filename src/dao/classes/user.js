@@ -39,6 +39,26 @@ class User {
       console.error(error);
     }
   }
+
+  updateRole = async (idUser, updateRole) => {
+    try {
+      const user = await userModel.updateOne({ _id: idUser }, { $set: { role: updateRole } });
+
+      return user
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  updatePassword = async (email, password) => {
+    try {
+      const user = await userModel.updateOne({ email }, { $set: { password } });
+
+      return user
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 module.exports = User

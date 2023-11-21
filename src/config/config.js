@@ -13,5 +13,6 @@ module.exports = {
   TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
   TWILIO_SMS_NUMBER: process.env.TWILIO_SMS_NUMBER,
   NUMBER_TEST: process.env.NUMBER_TEST,
-  NODE_ENV: process.env.NODE_ENV
+  NODE_ENV: process.env.NODE_ENV,
+  KEY_JWT: process.env.KEY_JWT,
 }

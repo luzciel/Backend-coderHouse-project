@@ -4,7 +4,7 @@ const passport = require("passport");
 const { authorization } = require("../middlewares/middlewares.js");
 const getCart = require("../controllers/carts/getCart.js");
 const createCart = require("../controllers/carts/createCart.js");
-const addOneProductToCart = require("../controllers/carts/addOneProductTotalCart.js");
+const addOneProductToCart = require("../controllers/carts/addOneProductToCart.js");
 const deleteProduct = require("../controllers/carts/deleteProduct.js");
 const updateCart = require("../controllers/carts/updateCart.js");
 const updateQuantityOfProducts = require("../controllers/carts/updateQuantityOfProducts.js");
@@ -19,7 +19,7 @@ router.post("/", authenticateJWT, createCart);
 router.get("/:cid", getCart);
 
 //agrega un producto al carrito
-router.post("/:cid/product/:pid", authenticateJWT, authorization("usuario"), addOneProductToCart);
+router.post("/:cid/product/:pid", authenticateJWT, authorization("usuario", "premium"), addOneProductToCart);
 
 //elimina del carrito el producto seleccionado
 router.delete("/:cid/product/:pid", deleteProduct);

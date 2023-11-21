@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 const passport = require("passport");
 const register = require("../controllers/users/register");
 const login = require("../controllers/users/login");
@@ -8,6 +7,10 @@ const failRegister = require("../controllers/users/failRegister");
 const logout = require("../controllers/users/logout");
 const githubcallback = require("../controllers/users/githubcallback");
 const current = require("../controllers/users/current");
+const updateRole = require("../controllers/users/updateRole");
+const passwordRecovery = require("../controllers/users/passwordRecovery");
+const restorePassword = require("../controllers/users/restorePassword");
+const router = express.Router();
 
 router.post( "/register", passport.authenticate("register", { failureRedirect: "/api/sessions/failregister"}), register);
 
@@ -27,5 +30,11 @@ router.get( "/githubcallback", passport.authenticate("github", { failureRedirect
 );
 
 router.get( "/current", passport.authenticate("jwt", { session: false }), current );
+
+router.patch("/premium/:uid", passport.authenticate("jwt", { session: false }), updateRole );
+
+router.post("/passwordrecovery", passwordRecovery);
+
+router.patch("/restore/:token", restorePassword);
 
 module.exports = router;

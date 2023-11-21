@@ -8,8 +8,8 @@ class UserRepository {
     return newCarts;
   }
   
-  getUser = async (id) => {
-    const user = await this.dao.getUser(id);
+  getUser = async (email) => {
+    const user = await this.dao.getUser(email);
     return user;
   }
 
@@ -20,6 +20,16 @@ class UserRepository {
   getUserId = async (id) => {
     const user = await this.dao.getUserId(id);
     return user;
+  }
+
+  updateRole = async (idUser, updateRole) => {
+    const user = await this.dao.updateRole(idUser, updateRole);
+    return user
+  }
+
+  updatePassword = async (email, password) => {
+    const user = await this.dao.updatePassword(email, password);
+    return user
   }
 }
 

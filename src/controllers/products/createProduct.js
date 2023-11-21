@@ -6,7 +6,6 @@ const EErrors = require("../../services/error/enums.js");
 const createProduct = async (req, res) => {
   try {
     const body = req.body;
-
     if (
       !body ||
       !body.title ||
