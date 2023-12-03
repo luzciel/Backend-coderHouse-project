@@ -17,8 +17,8 @@ router.get("/:pid", getOneProduct);
 
 router.post("/", authenticateJWT, authorization("administrador", "premium"), createProduct);
 
-router.delete("/:pid", authenticateJWT, authorization("administrador", "usuario"),  deleteProduct);
+router.delete("/:pid", authenticateJWT, authorization("administrador", "premium"),  deleteProduct);
 
-router.put("/:pid", authenticateJWT, authorization("administrador", "usuario"),  updateProduct);
+router.put("/:pid", authenticateJWT, authorization("administrador", "premium"),  updateProduct);
 
 module.exports = router;

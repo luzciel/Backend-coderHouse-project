@@ -27,7 +27,7 @@ const deleteProduct = async (req, res) => {
          ]);
          return;
        } else {
-         res.status(200).send({ status: "success", payload: deleteProduct });
+         res.status(200).send({ status: "success", payload: "Producto eliminado" });
        }
      }
    } catch (error) {
