@@ -11,7 +11,7 @@ const deleteAllProductsFromCart = async (req, res) => {
       return res.status(404).send(notFoundInBd);
     }
 
-    res.status(200).send({ status: "success", payload: deleteProducts });
+    res.status(200).send({ status: "success", payload: "Carrito vaciado" });
   } catch (error) {
     handleError(res, error);
   }

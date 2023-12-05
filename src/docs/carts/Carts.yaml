@@ -1,0 +1,528 @@
+paths:
+  /api/carts/:
+    post:
+      summary: Crea un carrito vacio con el id del usuario. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Cart
+      responses:
+        "200": 
+          description: "Ya el usuario tiene un carrito registrado "
+        "201":
+          description: "Carrito creado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/CreateCart'
+        "401":
+          description: "Error, usuario no autenticado"
+        "500":
+          description: "Error interno del servidor"
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un carrito por su id. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          $type: string
+      responses:
+        "200":
+          description: "Data obtenida exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/GetCart'
+        "401":
+          description: "Error, usuario no autenticado"
+        "500":
+          description: "Error interno del servidor"
+    delete:
+      summary: Elimina todos los productos del carrito. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          $type: string
+      responses:
+        "200":
+          description: "Producto eliminado del carrito exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/DeleteAllProductsFromCart'
+        "401":
+          description: "Error, usuario no autenticado"
+        "500":
+          description: "Error interno del servidor"
+    put:
+      summary: Actualiza el carrito con un arreglo de productos. Se requiere el token de autenticación(login) para acceder.
+      tags:
+      - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          $type: string
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/UpdateCart'
+      responses:
+        "200":
+          description: "Carrito actualizado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/UpdateCart'
+        "401":
+          description: "Error, usuario no autenticado"
+        "500":
+          description: "Error interno del servidor"
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto al carrito. Se requiere el token de autenticación (login) para acceder. Cabe destacar, que un usuario premium no puede agregar un producto al carrito del cual sea owner.
+      tags:
+      - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          $type: string
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          $type: string
+      responses:
+        "200":
+          description: "Producto agregado exitosamente al carrito"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/AddProduct'
+        "401":
+          description: "Error, usuario no autenticado"
+        "403":
+          description: "Usuario no autorizado (forbidden) para agregar el producto al carrito porque es el owner del producto"
+        "500":
+          description: "Error interno del servidor"
+    delete:
+      summary: Elimina un producto al carrito. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          $type: string
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          $type: string
+      responses:
+        "200":
+          description: "Producto eliminado exitosamente del carrito"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/DeleteProduct'
+        "401":
+          description: "Error, usuario no autenticado"
+        "403":
+          description: "Usuario no autorizado (forbidden) para agregar el producto al carrito porque es el owner del producto"
+        "500":
+          description: "Error interno del servidor"
+    put:
+      summary: Actualiza la cantidad de ejemplares del producto por cualquier cantidad pasada desde el body. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          $type: string
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          $type: string
+      requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/UpdateProductQuantity'
+      responses:
+        "200":
+          description: "Cantidad de prodcuto actualizado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/UpdateProductQuantity'
+        "401":
+          description: "Error, usuario no autenticado"
+        "403":
+          description: "Usuario no autorizado (forbidden) para agregar el producto al carrito porque es el owner del producto"
+        "500":
+          description: "Error interno del servidor"
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Realiza la compra de un carrito. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          $type: string
+      responses:
+        "200":
+          description: "Compra realizada exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/PurchaseCart'
+        "401":
+          description: "Error, usuario no autenticado"
+        "500":
+          description: "Error interno del servidor"
+
+components:
+  schemas:
+    CreateCart:
+      type: Object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          _id:
+            type: ObjectId
+            description: Id generado en MongoDB
+          owner:
+            type: Array
+            description: Array de Productos
+      example:
+        status: "success"
+        payload:
+          _id: "64fa65c87fd82e128b2b8902"
+          product: []
+    GetCart:
+      type: Object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: Array
+          items:
+            type: Object
+            properties:
+              _id:
+                type: String
+                description: Id del carrito generado en MongoDB
+              products:
+                type: Array
+                description: Array de Productos
+                items:
+                  type: Object
+                  properties:
+                    product:
+                      type: Object
+                      properties:
+                        _id:
+                          type: String
+                          description: id del producto generado en MongoDB
+                        title:
+                          type: string
+                          description: Titulo del producto
+                        description:
+                          type: String
+                          description: Descripción del producto
+                        code:
+                          type: Integer
+                          description: Código del Producto
+                        price:
+                          type: Integer
+                          description: Precio del Producto
+                        status:
+                          type: Boolean
+                          description: Estatus del Producto
+                        stock:
+                          type: Integer
+                          description: Cantidad de Productos
+                        category:
+                          type: String
+                          description: Categoría del Producto
+                        thumbnails:
+                          type: Array
+                          description: Imagenes del Producto
+      example:
+        status: "success"
+        payload:
+              - _id: "652ae4437b0de4591237cbed"
+                products:
+                  - product:
+                      _id: "64fa66f5a664d737b8a361c2"
+                      title: "Escritorio de madera"
+                      description: "Escritorio de madera 160x70"
+                      code: 1212
+                      price: 50000
+                      status: true
+                      stock: 0
+                      category: "Mueble"
+                      thumbnails:
+                        - "https://images.pexels.com/photos/8251166/pexels-photo-8251166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                      __v: 0
+                    quantity: 19
+                    _id: "652aea25b45056d34462111b"
+                  - product:
+                      _id: "64fa65c87fd82e128b2b8902"
+                      title: "mouse"
+                      description: "mouse marca Trust, inalámbrico"
+                      code: 1234
+                      price: 12000
+                      status: true
+                      stock: 119
+                      category: "tecnologia"
+                      thumbnails: []
+                      __v: 0
+                    quantity: 30
+                    _id: "652aea25b45056d34462111c"
+                __v: 0
+    DeleteAllProductsFromCart:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: String
+          description: Mensaje de respuesta
+      example:
+        status: "success"
+        payload: "Carrito vaciado"
+    AddProduct:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: String
+          description: Mensaje de respuesta
+      example:
+        status: "success"
+        payload: "Producto agregado"
+    DeleteProduct:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: String
+          description: Mensaje de respuesta
+      example:
+        status: "success"
+        payload: "Producto eliminado"
+    UpdateProductQuantity:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: object
+          properties:
+            _id:
+              type: string
+              description: Id del carrito
+            products:
+              type: array
+              items:
+                type: object
+                properties:
+                  product:
+                    type: string
+                    description: identificador (id) del producto en el carrito
+                  quantity:
+                    type: integer
+                    description: Cantidad de Productos
+                  _id:
+                    type: string
+                    description: Id del producto
+      example:
+        status: "success"
+        payload:
+          _id: "652ae4437b0de4591237cbed"
+          products:
+            - product: "64fa65c87fd82e128b2b8902"
+              quantity: 30
+              _id: "652aea25b45056d34462111c"
+            - product: "64fa66f5a664d737b8a361c2"
+              quantity: 5
+              _id: "656e48e1e416b1af0bc7cf70"
+              __v: 0
+    ProductInfo:
+      type: object
+      properties:
+        product:
+          type: object
+          properties:
+            _id:
+              type: string
+            title:
+              type: string
+            description:
+              type: string
+            code:
+              type: integer
+            price:
+              type: integer
+            status:
+              type: boolean
+            stock:
+              type: integer
+            category:
+              type: string
+            thumbnails:
+              type: array
+              items:
+                type: string             
+    PurchaseCart:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Respuesta del servidor
+        payload:
+          type: object
+          properties:
+            productStatus:
+              type: object
+              properties:
+                availableProduct:
+                  type: array
+                  description: Array con los productos comprados
+                  items:
+                    $ref: '#/components/schemas/ProductInfo'
+                soldOut:
+                  type: array
+                  description: Array con los productos sin stock ssuficiente para la compra.
+                  items:
+                    $ref: '#/components/schemas/ProductInfo'              
+      example:
+        status: "success"
+        payload:
+          productStatus:
+            availableProduct:
+              - product:
+                  _id: "64fa65c87fd82e128b2b8902"
+                  title: "mouse"
+                  description: "mouse marca Trust, inalambrico"
+                  code: 1234
+                  price: 12000
+                  status: true
+                  stock: 119
+                  category: "tecnologia"
+                  thumbnails: []
+                  __v: 0
+                quantity: 1
+                _id: "652afd6ad2867db52216c3e1"
+            soldOut:
+              - product:
+                  _id: "64fa665fa664d737b8a361bf"
+                  title: "teclado inalambrico"
+                  description: "teclado marca GTC, inalambrico"
+                  code: 6789
+                  price: 16000
+                  status: true
+                  stock: 0
+                  category: "tecnologia"
+                  thumbnails: []
+                  __v: 0
+                quantity: 1
+                _id: "652b0144fe37418c7f6c78f0"
+              - product:
+                  _id: "64fa66f5a664d737b8a361c2"
+                  title: "Escritorio de madera"
+                  description: "Escritorio de madera 160x70"
+                  code: 1212
+                  price: 50000
+                  status: true
+                  stock: 0
+                  category: "Mueble"
+                  thumbnails:
+                    - "https://images.pexels.com/photos/8251166/pexels-photo-8251166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                  __v: 0
+                quantity: 1
+                _id: "652b0146fe37418c7f6c78f7"
+    UpdateCart:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: String
+          description: Mensaje de respuesta
+      example:
+        status: "success"
+        payload: "Carrito actualizado"      
+  requestBodies:
+    UpdateProductQuantity:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          description: Cantidad de Productos
+      example:
+        quantity: 5
+    UpdateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: identificador (id) del producto en el carrito
+              quantity:
+                type: integer
+                description: Cantidad de Productos
+              _id:
+                type: string
+                description: Id del Producto
+      example:
+        products:
+          - product: "64fb347a952a08dd0a9991a2"
+            quantity: 30
+          - product: "64fa65c87fd82e128b2b8902"
+            quantity: 5

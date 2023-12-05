@@ -77,7 +77,7 @@ paths:
         "400":
           description: "Erro en la peticion - Bad request"
         "401":
-          description: "Usuario no autorizado"
+          description: "Error, usuario no autenticado"
         "500":
           description: "Error interno del servidor"
   /api/products/{pidDelete}:
@@ -135,18 +135,6 @@ paths:
 
 components:
   schemas:
-    Login:
-      type: object
-      properties:
-        status:
-          type: String
-          description: Respuesta del servidor
-        payload:
-          type: String
-          description: Mensaje de respuesta
-      example:
-        email: ""
-        password: "123456"
     Products:
       type: object
       properties:
@@ -163,10 +151,10 @@ components:
           type: String
           description: Descripción del producto
         price:
-          type: Number
+          type: Integer
           description: Precio del producto
         stock:
-          type: Number
+          type: Integer
           description: Cantidad de Productos
         category:
           type: String
@@ -230,10 +218,10 @@ components:
           type: String
           description: Descripción del producto
         price:
-          type: Number
+          type: Integer
           description: Precio del producto
         stock:
-          type: Number
+          type: Integer
           description: Cantidad de Productos
         category:
           type: String
@@ -297,10 +285,10 @@ components:
           type: String
           description: Descripción del producto
         price:
-          type: Number
+          type: Integer
           description: Precio del Producto
         stock:
-          type: Number
+          type: Integer
           description: Cantidad de Productos
         code:
           type: String
@@ -323,15 +311,3 @@ components:
         "stock": 100
         "owner": "luzcielm@gmail.com"
         "thumbnail": []
-    login:
-      type: object
-      properties:
-        email:
-          type: String
-          description: Email del usuario
-        password:
-          type: String
-          description: Password del usuario
-      example:
-        "email": "luzcielm@gmail.com"
-        "password": "123"

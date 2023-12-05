@@ -54,7 +54,7 @@ const swaggerOptions = {
       description: 'Ecommerce API',
     },
   },
-  apis: ['./src/docs/Products.yaml'],
+  apis: [`${__dirname}/docs/**/*.yaml`],
 };
 
 const openapiSpecification = swaggerJsdoc(swaggerOptions);

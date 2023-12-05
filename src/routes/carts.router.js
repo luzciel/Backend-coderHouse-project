@@ -13,26 +13,28 @@ const createPurcharse = require("../controllers/carts/createPurcharse.js");
 
 const authenticateJWT = passport.authenticate("jwt", { session: false });
 
+// Crea un carrito
 router.post("/", authenticateJWT, createCart);
 
 //Lista los productos que pertenezcan al carrito con el parámetro cid proporcionados
-router.get("/:cid", getCart);
+router.get("/:cid", authenticateJWT, getCart);
 
 //agrega un producto al carrito
 router.post("/:cid/product/:pid", authenticateJWT, authorization("usuario", "premium"), addOneProductToCart);
 
 //elimina del carrito el producto seleccionado
-router.delete("/:cid/product/:pid", deleteProduct);
-
-//actualiza el carrito con un arreglo de productos
-router.put("/:cid", updateCart);
+router.delete("/:cid/product/:pid", authenticateJWT, deleteProduct);
 
 //Actualiza SÓLO la cantidad de ejemplares del producto por cualquier cantidad pasada desde el body
-router.put("/:cid/product/:pid", updateQuantityOfProducts);
+router.put("/:cid/product/:pid", authenticateJWT, updateQuantityOfProducts);
+
+//actualiza el carrito con un arreglo de productos
+router.put("/:cid", authenticateJWT, updateCart);
 
 //elimina todos los productos del carrito
-router.delete("/:cid", deleteAllProductsFromCart);
+router.delete("/:cid", authenticateJWT, deleteAllProductsFromCart);
 
+//
 router.post("/:cid/purchase", authenticateJWT,createPurcharse);
 
 module.exports = router;
