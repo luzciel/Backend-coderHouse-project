@@ -15,7 +15,12 @@ const addOneProductToCart = async (req, res) => {
 
     const updateCart = await cartServices.addOneProduct(cartId, productId);
 
-    res.status(200).send({ status: "success", payload: updateCart });
+    if (updateCart.modifiedCount === 0) {
+      return res
+        .status(404)
+        .send({ status: "Error", payload: "Carrito o producto no encontrado" });
+    }
+    res.status(200).send({ status: "success", payload: "Producto agregado" });
   } catch (error) {
     handleError(res, error);
   }

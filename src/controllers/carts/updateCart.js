@@ -17,7 +17,14 @@ const updateCart = async (req, res) => {
     cart.products = productsUpdate;
     const updateCart = await cartServices.updateCart(cartId, cart);
 
-    res.status(200).send({ status: "success", payload: updateCart });
+
+    if(updateCart.modifiedCount === 0 || updateCart.matchedCount === 0) {
+      res
+        .status(404)
+        .send({ status: "error", payload: "Carrito o producto no encontrado" });
+    }
+
+    res.status(200).send({ status: "success", payload: "Carrito actualizado" });
   } catch (error) {
     handleError(res, error);
   }

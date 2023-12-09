@@ -21,10 +21,13 @@ const createPurcharse = async (req, res) => {
       const updateCart = await deleteOrUpdateCart(idCart, soltOut); 
       const createTicket = await generateTicket({emailUser, totalTicket});
   
+      //Envio de email
       purchaseConfirmationEmail({availableProduct, totalTicket, createTicket });
 
       const userData = JSON.parse(req.cookies.userData);
       const textMessageBody = `Estimad@ ${userData.first_name}, le informamos que su compra fue correctamente procesada bajo el número ${createTicket.code}.`;
+      
+      //Envio de SMS
       await textMessage({textMessageBody})
 
       return res.status(200).send({ status: "success", payload: {productStatus}});

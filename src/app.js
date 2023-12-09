@@ -1,11 +1,13 @@
 const express = require("express");
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
-const errorHandler = require("./middlewares/errors/index.js");
 const MongoStore = require('connect-mongo');
 const handlebars = require("express-handlebars");
 const path = require("path");
 const passport = require("passport");
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const errorHandler = require("./middlewares/errors/index.js");
 const { inicializePassport } = require("./middlewares/passport.config");
 const {connectionMongodb} = require("./dao/connectionDatabase.js");
 const app = express();
@@ -19,6 +21,8 @@ const mockingproducts = require("./routes/mockingProduct.router");
 const loggerTest = require('./routes/loggerTest.router.js')
 const config = require("./config/config.js");
 const logger = require("./util/logger/logger.js");
+
+
 const URL_MONGODB = config.MONGO_URL
 const PORT = config.PORT ?? 8080;
 
@@ -41,6 +45,20 @@ app.use(session({
   saveUninitialized: true,
 }));
 
+// swagger docs configuration 
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Documentacion',
+      description: 'Ecommerce API',
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const openapiSpecification = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 inicializePassport(passport)
 app.use(passport.initialize());
@@ -51,10 +69,12 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use(express.static(path.join(__dirname, "public")));
 
+// Routes views
 app.use("/products", viewsProductRouter);
 app.use("/carts", viewsCartsRouter);
 app.use("/", viewsSessionsRouter);
 
+// Routes api
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);

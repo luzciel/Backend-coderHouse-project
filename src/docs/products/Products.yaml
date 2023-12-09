@@ -1,0 +1,313 @@
+paths:
+  /api/sessions/login:
+    post:
+      summary: Crea un token de sesión
+      tags:
+      - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/login'
+      responses:
+        "200":
+          description: "Data obtenida exitosamentes"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Login'
+        "400":
+          description: "Erro en la peticion - Bad request"
+        "500":
+          description: "Error interno del servidor"
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+      - Products
+      responses:
+        "200":
+          description: "Data obtenida exitosamentes"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Products'
+        "500":
+          description: "Error interno del servidor"
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto por su id
+      tags:
+      - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          $type: string
+      responses:
+        "200":
+          description: "Data obtenida exitosamentes"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        "500":
+          description: "Error interno del servidor"
+  /api/products/:
+    post:
+      summary: Obtiene un producto por su id. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createProduct'
+      responses:
+        "200":
+          description: "Data obtenida exitosamentes"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        "400":
+          description: "Erro en la peticion - Bad request"
+        "401":
+          description: "Error, usuario no autenticado"
+        "500":
+          description: "Error interno del servidor"
+  /api/products/{pidDelete}:
+    delete:
+      summary: Elimmina un producto por su id. Solo puede eliminar un producto el administrador o el usuario premium que creo dicho producto. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Products
+      parameters:
+      - name: pidDelete
+        in: path
+        required: true
+        description: ID del producto a eliminar
+        schema:
+          $type: string
+      responses:
+        "200":
+          description: "Producto eliminado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/DeleteProduct'
+        "403":
+          description: "Usuario no autorizado (forbidden)"
+        "500":
+          description: "Error interno del servidor"
+  /api/products/{pidUpdate}:
+    put:
+      summary: Actualizar un producto por su id. Solo puede actualizar un producto el administrador o el usuario premium que creo dicho producto. Se requiere el token de autenticación (login) para acceder.
+      tags:
+      - Products
+      parameters:
+      - name: pidUpdate
+        in: path
+        required: true
+        description: ID del producto a actualizar
+        schema:
+          $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createProduct'
+      responses:
+        "200":
+          description: "Producto actualizado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/UpdateProduct'
+        "403":
+          description: "Usuario no autorizado (forbidden)"
+        "500":
+          description: "Error interno del servidor"
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        _id:
+          type: ObjectId
+          description: Id generado en MongoDB
+        title:
+          type: String
+          description: Productos de la tienda
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Integer
+          description: Precio del producto
+        stock:
+          type: Integer
+          description: Cantidad de Productos
+        category:
+          type: String
+          description: Categoría del producto
+        thumbnail:
+          type: Array
+          description: Imagen del producto
+        code:
+          type: String
+          description: Código del producto
+        owner:
+          type: String
+          description: Creador del producto
+      example:
+        status: "success"
+        payload:
+          docs:
+            - _id: "64fa65c87fd82e128b2b8902"
+              title: "mouse"
+              description: "mouse marca Trust, inalambrico"
+              code: 1234
+              price: 12000
+              status: true
+              stock: 119
+              category: "tecnologia"
+              thumbnails: []
+              __v: 0
+            - _id: "64fa665fa664d737b8a361bf"
+              title: "teclado inalambrico"
+              description: "teclado marca GTC, inalambrico"
+              code: 6789
+              price: 16000
+              status: true
+              stock: 0
+              category: "tecnologia"
+              thumbnails: []
+              __v: 0
+          totalDocs: 8
+          offset: 0
+          limit: 10
+          totalPages: 1
+          page: 1
+          pagingCounter: 1
+          hasPrevPage: false
+          hasNextPage: false
+          prevPage: null
+          nextPage: null
+    Product:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        _id:
+          type: ObjectId
+          description: Id generado en MongoDB
+        title:
+          type: String
+          description: Productos de la tienda
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Integer
+          description: Precio del producto
+        stock:
+          type: Integer
+          description: Cantidad de Productos
+        category:
+          type: String
+          description: Categoría del producto
+        thumbnail:
+          type: Array
+          description: Imagen del producto
+        code:
+          type: String
+          description: Código del producto
+        owner:
+          type: String
+          description: Creador del producto
+      example:
+        status: "success"
+        payload:
+          docs:
+            - _id: "64fa65c87fd82e128b2b8902"
+              title: "mouse"
+              description: "mouse marca Trust, inalambrico"
+              code: 1234
+              price: 12000
+              status: true
+              stock: 119
+              category: "tecnologia"
+              owner: "luzciel@gmail.com"
+              thumbnails: []
+              __v: 0
+    DeleteProduct:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: String
+          description: Mensaje de respuesta
+      example:
+        status: "success"
+        payload: "Producto eliminado"
+    UpdateProduct:
+      type: object
+      properties:
+        status:
+          type: String
+          description: Respuesta del servidor
+        payload:
+          type: String
+          description: Mensaje de respuesta
+      example:
+        status: "success"
+        payload: "Producto actualizado"
+  requestBodies:
+    createProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: titulo del Producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Integer
+          description: Precio del Producto
+        stock:
+          type: Integer
+          description: Cantidad de Productos
+        code:
+          type: String
+          description: Código del Producto
+        status:
+          type: Boolean
+          description: Estatus del Producto
+        category:
+          type: String
+          description: Categoría del Producto
+        thumbnail:
+          type: Array
+          description: Imagen del Producto
+      example:
+        "title": "Teclado Rosado"
+        "description": "Teclado gamer Rosado"
+        "code": "87844335"
+        "category": "tecnologia"
+        "price": 400000
+        "stock": 100
+        "owner": "luzcielm@gmail.com"
+        "thumbnail": []

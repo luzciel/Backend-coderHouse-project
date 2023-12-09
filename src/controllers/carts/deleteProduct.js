@@ -14,7 +14,7 @@ const deleteProductFromTheCart = async (req, res) => {
         .send({ status: "error", payload: "Carrito o producto no encontrado" });
     }
 
-    res.status(200).send({ status: "success", payload: productDelete });
+    res.status(200).send({ status: "success", payload: "Producto eliminado" });
   } catch (error) {
     handleError(res, error);
   }

@@ -50,7 +50,7 @@ const updateProduct = async (req, res) => {
       ]);
       return;
     } else {
-      res.status(200).send({ status: "success", payload: updateProduct });
+      res.status(200).send({ status: "success", payload: "Producto actualizado" });
     }
   } catch (error) {
     handleError(res, error);
