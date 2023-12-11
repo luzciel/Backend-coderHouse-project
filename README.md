@@ -76,6 +76,8 @@ PATCH /api/users/premium/:uid
 
 /carts/:cid?
 
+### Testing
+![](./img/testing.png)
 
 ### Restablecimiento de contraseña
 

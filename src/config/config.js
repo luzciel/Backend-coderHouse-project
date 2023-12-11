@@ -4,6 +4,7 @@ dotenv.config();
 
 module.exports = {
   MONGO_URL: process.env.MONGO_URL,
+  MONGO_URL_TESTING: process.env.MONGO_URL_TESTING,
   PORT: process.env.PORT,
   ADMIN_EMAIL: process.env.ADMIN_EMAIL,
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
