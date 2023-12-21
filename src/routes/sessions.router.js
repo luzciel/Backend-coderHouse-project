@@ -1,5 +1,6 @@
 const express = require("express");
 const passport = require("passport");
+const uploader = require("../middlewares/multer");
 const register = require("../controllers/users/register");
 const login = require("../controllers/users/login");
 const failLogin = require("../controllers/users/failLogin");
@@ -10,6 +11,8 @@ const current = require("../controllers/users/current");
 const updateRole = require("../controllers/users/updateRole");
 const passwordRecovery = require("../controllers/users/passwordRecovery");
 const restorePassword = require("../controllers/users/restorePassword");
+const documents = require("../controllers/users/documents");
+
 const router = express.Router();
 
 router.post( "/register", passport.authenticate("register", { failureRedirect: "/api/sessions/failregister"}), register);
@@ -36,5 +39,7 @@ router.patch("/premium/:uid", passport.authenticate("jwt", { session: false }), 
 router.post("/passwordrecovery", passwordRecovery);
 
 router.patch("/restore/:token", restorePassword);
+
+router.post("/:uid/documents/", uploader.array('documents'), documents);
 
 module.exports = router;

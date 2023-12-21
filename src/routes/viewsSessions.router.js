@@ -7,6 +7,7 @@ const error = require('../controllers/viewsSessions/error');
 const passwordRecovery = require('../controllers/viewsSessions/passwordRecovery');
 const restorePassword = require('../controllers/viewsSessions/restorePassword');
 const passwordRecoveryLinkExpired = require('../controllers/viewsSessions/passwordRecoveryLinkExpired');
+const documents = require('../controllers/viewsSessions/documents');
 
 const authenticateJWT = passport.authenticate("jwt", { session: false })
 const router = express.Router();
@@ -24,6 +25,8 @@ router.get("/passwordrecovery", passwordRecovery);
 router.get("/password-recovery-link-expired", passwordRecoveryLinkExpired);
 
 router.get("/restore/:token", restorePassword);
+
+router.get("/documents", documents);
 
 
 

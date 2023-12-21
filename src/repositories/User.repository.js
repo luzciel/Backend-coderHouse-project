@@ -31,6 +31,11 @@ class UserRepository {
     const user = await this.dao.updatePassword(email, password);
     return user
   }
+
+  updateLastConnection = async (email, currentDate) => {
+    const user = await this.dao.updateLastConnection(email, currentDate);
+    return user
+  }
 }
 
 module.exports = UserRepository
