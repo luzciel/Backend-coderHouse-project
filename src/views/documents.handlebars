@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+  <body>
+    <form action="/api/sessions/6508a855eb834f1d5d5488e5/documents" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="Identificacion"> Identificacion: </label>
+        <input type="file" id="Identificacion" name="documents">
+      </div>
+
+    <div>
+      <label for="Comprobante_de_domicilio"> Comprobante de domicilio </label>
+      <input type="file" id="Comprobante_de_domicilio" name="documents">
+    </div>
+      
+      <div>
+      <label for="Comprobante_de_estado_de_cuenta"> Comprobante de estado de cuenta </label>
+      <input type="file" id="Comprobante_de_estado_de_cuenta" name="documents">
+      </div>
+
+
+      <button type="submit">Subir Archivo</button>
+    </form>
+  </body>
+  <script src="/scripts.js"></script>
+</html>
