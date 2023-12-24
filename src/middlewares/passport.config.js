@@ -36,15 +36,17 @@ const inicializePassport = () => {
           if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
             role = "administrador";
           }
+
           const newUser = {
             first_name,
             last_name,
             age,
             email,
             password: hashedPassword,
-            role,
+            role
           };
           let userCreated = await userServices.newUser(newUser);
+          
           return done(null, userCreated);
         } catch (error) {
           return done("Error al obtener el usuario:" + error);

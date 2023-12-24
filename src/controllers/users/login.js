@@ -2,9 +2,12 @@
 const jwt = require("jsonwebtoken");
 const config = require("../../config/config.js");
 const KEY_JWT = config.KEY_JWT;
-const login = (req, res) => {
+const { userServices } = require("../../repositories/index.js");
+
+const login = async (req, res) => {
   const email = req.user.email;
   const password = req.user.password;
+  const currentDate = new Date();
 
   const userData = {
     first_name: req.user.first_name,
@@ -13,6 +16,8 @@ const login = (req, res) => {
     email,
     role: req.user.role
   }
+
+  await userServices.updateLastConnection(email, currentDate);
 
   let token = jwt.sign({ email, password, role: userData.role }, KEY_JWT, {
     expiresIn: "24h",
