@@ -75,7 +75,7 @@ class User {
     }
   };
 
-  updateDocuments = async (uid, documents) => {
+  updateDocuments = async (uid, newDocuments) => {
     try {
       const user = await userModel.updateOne(
         { _id: uid },
