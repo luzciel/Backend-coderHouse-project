@@ -1,9 +1,12 @@
+const config = require("../../config/config.js");
+
+const URL = config.URL;
 const getOneProduct = async (req, res) => {
   const id = String(req.params.pid);
   let isValid = true;
   
   try {
-  const response = await fetch(`http://localhost:8080/api/products/${id}`);
+  const response = await fetch(`${URL}/api/products/${id}`);
   const data = await response.json();
 
   if (data.status !== "success") {

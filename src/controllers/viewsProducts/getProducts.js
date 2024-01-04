@@ -1,3 +1,6 @@
+const config = require("../../config/config.js");
+
+const URL = config.URL;
 const getProducts = async (req, res) => {
   const cookieUserData = req.cookies?.userData;
     
@@ -13,7 +16,7 @@ const getProducts = async (req, res) => {
   let isValid = true;
     
     try {
-      const response = await fetch(`http://localhost:8080/api/products?page=${page}&limit=${limit}`);
+      const response = await fetch(`${URL}/api/products?page=${page}&limit=${limit}`);
       const data = await response.json();
 
       if (data.status !== "success") {

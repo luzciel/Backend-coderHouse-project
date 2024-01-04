@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     ],
     default: [],
   },
-  last_connection: { type: Date, default: null },
+  last_connection: { type: Date, default: Date.now},
 });
 
 userSchema.pre("find", function () {

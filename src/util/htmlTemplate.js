@@ -75,5 +75,26 @@ class HtmlTemplate {
     return message
   
   }
+
+  static createMessageAccountDeletion = () => {
+    const message = `
+      <div>
+        <p>Tu cuenta ha sido eliminada por inactividad</p>
+      </div>
+    `;
+
+    return message
+  }
+
+  static createMessageProductDeletion = ({productName, code}) => {
+    const message = `
+      <div>
+        <p>El producto ${productName} con el código ${code} ha sido eliminado</p>
+      </div>
+    `;
+
+    return message
+  }
 }
+
 module.exports = HtmlTemplate;

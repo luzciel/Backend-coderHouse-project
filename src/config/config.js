@@ -16,4 +16,5 @@ module.exports = {
   NUMBER_TEST: process.env.NUMBER_TEST,
   NODE_ENV: process.env.NODE_ENV,
   KEY_JWT: process.env.KEY_JWT,
+  URL: process.env.URL
 }

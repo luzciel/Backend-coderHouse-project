@@ -1,3 +1,4 @@
+const { compareSync } = require("bcrypt");
 const { userModel } = require("../models/user.modelo.js");
 
 class User {
@@ -21,6 +22,15 @@ class User {
     }
   };
 
+  getAllUsers = async () => {
+    try {
+      const users = await userModel.find();
+      return users;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   updateUser = async (email, newCarts) => {
     try {
       const update = { $set: { cart: newCarts._id } };
@@ -83,6 +93,25 @@ class User {
         { new: true }
       );
       return user;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  getInactiveUsers = async (time) => {
+    console.log(333)
+    try {
+      const users = await userModel.find({ last_connection: { $lt: Date.now() - time }});
+      return users;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  deleteUsers = async (userEmails) => {
+    try {
+      const deleteUsers = await userModel.deleteMany({ email: { $in: userEmails } });
+      return deleteUsers;
     } catch (error) {
       console.error(error);
     }
