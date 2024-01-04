@@ -34,7 +34,7 @@ class Product {
 
   deleteOneProduct = async (id) => {
     try {
-      const deleteProduct = await productModel.deleteOne({ _id: id });
+      const deleteProduct = await productModel.findOneAndDelete({ _id: id });
       return deleteProduct;
     } catch (error) {
       console.error(error);

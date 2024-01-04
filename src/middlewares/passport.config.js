@@ -11,6 +11,7 @@ const ExtractJWT = jwt.ExtractJwt;
 const ADMIN_EMAIL = config.ADMIN_EMAIL;
 const ADMIN_PASSWORD = config.ADMIN_PASSWORD;
 const KEY_JWT = config.KEY_JWT;
+const URL = config.URL;
 
 const localStrategy = local.Strategy;
 const inicializePassport = () => {
@@ -85,7 +86,7 @@ const inicializePassport = () => {
       {
         clientID: "Iv1.bad75f508c4d8757",
         clientSecret: "32d85773ded13d733dbd514d121b1a41d5ae17de",
-        callbackURL: "http://localhost:8080/api/sessions/githubcallback",
+        callbackURL: `${URL}/api/sessions/githubcallback`,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {

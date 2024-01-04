@@ -13,6 +13,11 @@ class UserRepository {
     return user;
   }
 
+  getAllUsers = async () => {
+    const users = await this.dao.getAllUsers();
+    return users;
+  }
+
   updateUser = async (email, newCarts) => {
     const update = await this.dao.updateUser(email, newCarts);
   }
@@ -39,6 +44,16 @@ class UserRepository {
 
   updateDocuments = async (email, documents) => {
     const user = await this.dao.updateDocuments(email, documents);
+    return user
+  }
+
+  getInactiveUsers = async (time) => {
+    const user = await this.dao.getInactiveUsers(time);
+    return user
+  }
+
+  deleteUsers = async (userEmails) => {
+    const user = await this.dao.deleteUsers(userEmails);
     return user
   }
 }

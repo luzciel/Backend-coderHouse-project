@@ -6,6 +6,7 @@ const {userServices} = require("../../repositories/index.js");
 const {restorePasswordEmail} =require('../../util/nodemailer.js');
 
 const KEY_JWT = config.KEY_JWT;
+const URL = config.URL;
 const passwordRecovery = async (req, res) => {
   const email = req.body.email;
 
@@ -21,7 +22,7 @@ const passwordRecovery = async (req, res) => {
     }
 
     const id = getToken(email)
-    const linkRestore = `http://localhost:8080/restore/${id}`
+    const linkRestore = `${URL}/restore/${id}`
 
     restorePasswordEmail({email, linkRestore});
 

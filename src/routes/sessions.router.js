@@ -11,9 +11,14 @@ const current = require("../controllers/users/current");
 const updateRole = require("../controllers/users/updateRole");
 const passwordRecovery = require("../controllers/users/passwordRecovery");
 const restorePassword = require("../controllers/users/restorePassword");
+const getAllUsers = require("../controllers/users/getAllUsers");
 const documents = require("../controllers/users/documents");
+const deleteInactiveUsers = require("../controllers/users/deleteInactiveUsers");
+const deleteUser = require("../controllers/users/deleteUser");
 
 const router = express.Router();
+
+router.get("/", getAllUsers );
 
 router.post( "/register", passport.authenticate("register", { failureRedirect: "/api/sessions/failregister"}), register);
 
@@ -41,5 +46,9 @@ router.post("/passwordrecovery", passwordRecovery);
 router.patch("/restore/:token", restorePassword);
 
 router.post("/:uid/documents/", uploader.array('documents'), documents);
+
+router.delete("/", deleteInactiveUsers)
+
+router.delete("/:email", deleteUser)
 
 module.exports = router;

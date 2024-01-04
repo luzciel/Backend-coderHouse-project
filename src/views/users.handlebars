@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios</title>
+</head>
+<body>
+  {{#if isValid}}
+  <div>
+  <h1>Lista de Usurios:</h2>
+  <ul>
+    {{#each users.payload}}
+      <li>
+        <h3>{{first_name}}</h3>
+        <p>Email: {{email}}</p>
+        <p>Rol: {{role}}</p>
+        <button onclick="changeRole('{{id}}', '{{role}}')">
+         Cambiar Rol
+        </button>
+        <button onclick="deleteUser('{{email}}')">
+          Eliminar
+        </button>
+      </li>
+    {{/each}}
+  </ul>
+<br />
+</div>
+{{else}}
+<h1>No hay Usuarios para mostrar</h1>
+{{/if}}
+</body>
+  <script src="/scripts/users.js"></script>
+</html>

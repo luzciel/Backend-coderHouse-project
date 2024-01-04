@@ -49,7 +49,23 @@ const restorePasswordEmail = ({ email, linkRestore }) => {
   
   sendEmail({ emailUser: email, message, subject });
 };
+
+const accountDeletionEmail = ({ email }) => {
+  const message = HtmlTemplate.createMessageAccountDeletion();
+  const subject = "Cuenta eliminada por inactividadd";
+  
+  sendEmail({ emailUser: email, message, subject });
+};
+
+const productDeletionEmail = ({ email, productName, code }) => {
+  const message = HtmlTemplate.createMessageProductDeletion({productName, code});
+  const subject = "Producto eliminado";
+  
+  sendEmail({ emailUser: email, message, subject });
+};
 module.exports = {
   purchaseConfirmationEmail,
-  restorePasswordEmail
+  restorePasswordEmail,
+  accountDeletionEmail,
+  productDeletionEmail
 };
