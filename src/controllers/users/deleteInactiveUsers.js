@@ -3,10 +3,10 @@ const handleError = require("../../util/handleError.js");
 const { accountDeletionEmail } = require('../../util/nodemailer.js');
 const deleteInactiveUsers = async (req, res) => {
   try {
-    const minutes = 5;
-    const miliseconds = minutes * 60 * 1000;
+    const days = 2;
+    const millisecondsInADay = days * 24 * 60 * 60 * 1000;
     
-    const inactiveUsers = await userServices.getInactiveUsers(miliseconds);
+    const inactiveUsers = await userServices.getInactiveUsers(millisecondsInADay);
 
     if (inactiveUsers.length === 0) {
       return res
