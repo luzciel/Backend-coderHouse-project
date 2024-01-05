@@ -9,6 +9,7 @@ const restorePassword = require('../controllers/viewsSessions/restorePassword');
 const passwordRecoveryLinkExpired = require('../controllers/viewsSessions/passwordRecoveryLinkExpired');
 const documents = require('../controllers/viewsSessions/documents');
 const users = require('../controllers/viewsSessions/users');
+const {authorization} = require("../middlewares/middlewares");
 
 const authenticateJWT = passport.authenticate("jwt", { session: false })
 const router = express.Router();
@@ -19,7 +20,7 @@ router.get('/', login)
 
 router.get('/profile', authenticateJWT, perfile);
 
-router.get('/users', users);
+router.get('/users', authenticateJWT, authorization("administrador"), users);
 
 router.get("/error", error);
 

@@ -1,80 +1,39 @@
 # Proyecto Coder House
+Backend de una aplicación de e-commerce para poder vender productos de un rubro a
+elección.Contiene la logica para agregar, editar y elimar productos y usuarios, ademas de su respectivo carrito de compra.
 
-### A continuación se listan los endpoint que formarán parte de esta API:
+El servidor se basará en un diseño de capas, orientado a MVC.
 
-#### Products
-GET /api/products
+## Base URL
+https://ecommerce-coder-production.up.railway.app
 
-GET /api/products?limit=numero&page=number&sort=asc&query={"category":"tecnologia"}
+## Documentación con swagger
+https://ecommerce-coder-production.up.railway.app/api-docs/
 
-GET /api/products/:pid
+## Instalación 
 
-POST /api/products
+- Instalar dependencias: 
+```js
+$ npm install
+```
 
-DELETE /api/products/:pid
+- Correr el proyecto: 
+```js
+$ npm run dev
+```
 
-PUT /api/products/:pid
+Para visualizarlo los endpoints utilizar http://localhost:8080
 
-#### Cart
-GET /api/carts/:cid
+## Capturas de pantalla
 
-POST /api/carts
+### Correo de eliminación de producto cuyo owner es premium
+![](./img/email-delete-product.png)
 
-PUT /api/carts/:cid
+### Correo de eliminación de cuenta inactivas
+![](./img/email-delete-user.png)
 
-DELETE /api/carts/:cid
-
-POST /api/carts/:cid/product/:pid
-
-PUT /api/carts/:cid/product/:pid
-
-DELETE /api/carts/:cid/product/:pid
-
-#### User
-POST /api/users/register
-
-GET /api/users/failregister
-
-POST /api/users/login
-
-GET /api/users/faillogin
-
-GET /api/users/logout
-
-GET /api/users/current
-
-PATCH /api/users/premium/:uid
-
-POST /api/users/passwordrecovery
-
-PATCH /api/users/restore/:token
-
-PATCH /api/users/premium/:uid 
-
-#### Views 
--Login
-
-/
-
--Registro del usuario
-
-/register
-
--Perfil del usuario
-
-/profile
-
--Lista de productos con paginación.
-
-/products
-
--Detalles del producto seleccionado.
-
-/products/:pid
-
--Lista los productos agregados al carrito.
-
-/carts/:cid?
+### Lista de usuarios
+![](./img/list-users.png)
 
 ### Testing
 ![](./img/testing.png)
@@ -84,17 +43,22 @@ PATCH /api/users/premium/:uid
 Login con link para restablecer contraseña
 ![](./img/login.png)
 
+
 Ingresar correo para restablecer contraseña
 ![](./img/password-recovery.png)
+
 
 Email con link para restablecer contraseña
 ![](./img/email-reset-password.png)
 
+
 Restablecimiento de contraseña exitoso
 ![](./img/password-reset.png)
 
+
 Error al ingresar la misma contraseña
 ![](./img/password-invalid.png)
+
 
 Link expirado
 ![](./img/link-expired.png)
